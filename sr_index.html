@@ -108,9 +108,45 @@ top:600px;
 		var ts = Number(new Date());
 		return ts;
 	}
+	
+	function getLayoutFromURL()
+	{
+		var reg = new RegExp('[\\?&](\\w+)=([0-9]+)\\.([0-9]+)\\.([a-z_]+)', 'g');
+		var s = window.location.href;
+		var m = reg.exec(s);
+		
+		if (!m){
+			return null;
+		}
+		
+		else{
+			
+			var new_layout = {};
+			
+			var i = 0;
+			while(m != 'undefined'){
+			
+				// make a new entry in layout
+				// set id of new entry to subgroup 1
+				// set X of new entry to subgroup 2
+				
+				new_layout[m[1]] = {};
+				new_layout[m[1]]["X"] = m[2];
+				new_layout[m[1]]["Y"] = m[3];
+				new_layout[m[1]]["class"] = m[4];
+				
+				alert(m[2]);
+				m = reg.exec(s);
+			
+			}
+		}
+	}
+
 
     $(document).ready(function(){
-
+			
+		alert(getLayoutFromURL());
+			
 	
               // stageitem_x
 			  // <div bla id="guitar_top_1"
@@ -177,6 +213,8 @@ top:600px;
 			
 		
 		}
+		
+		/*[\?&](\w*)=([0-9]+)\.([0-9]+)\.([a-z_]+)*/
 		
 		$(".layout_text").append(output);
 		
