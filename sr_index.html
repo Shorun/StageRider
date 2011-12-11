@@ -1,0 +1,211 @@
+<html>
+<head>
+<title>StageRider</title>
+<meta name="author" content="Clemens Holzkorn">
+
+<style type="text/css">
+
+.movable
+{
+    position: absolute;
+	z-index:1;
+}
+
+.guitar_top
+{
+    top:    200px;
+    left:   200px;
+    width:  200px;
+    height: 50px;
+}
+
+.guitar_box
+{
+    top:    250px;
+    left:   250px;
+    width:  200px;
+    height: 200px;
+}
+
+#solid
+{
+	position: absolute;
+	left:0px;
+	top:0px;
+    width:1000px;
+    height:520px;
+	z-index:0;
+}
+
+#item_list
+{
+
+position: absolute;
+left:1050px;
+top:10px;
+
+}
+
+.dragimg {
+	width:100%;
+	height:100%;
+}
+
+.close_button {
+	height:20;
+	width:20;
+}
+
+ul{
+list-style-type: none;
+}
+
+#layout_text{
+position:absolute;
+left:0px;
+top:600px;
+}
+
+</style>
+
+<script type="text/javascript" src="js/jquery1.min.js"></script>
+<script type="text/javascript" src="js/jquery2.min.js"></script>
+
+
+<script>
+
+	
+	itemdata = 
+	{
+		"Gitarren-Topteil":
+		{
+			width: 300,
+			height: 100,
+			image: "images/guitar_top.gif",
+			klasse: "guitar_top",
+		
+			
+		},
+		
+		"Gitarren-Box":
+		{
+			width: 300,
+			height: 100,
+			image: "images/guitar_box.gif",
+			klasse: "guitar_box",
+		
+			
+		}
+	}
+	
+	
+	layout = {};
+	
+	
+	
+	function timestamp ()
+	{
+		var ts = Number(new Date());
+		return ts;
+	}
+
+    $(document).ready(function(){
+
+	
+              // stageitem_x
+			  // <div bla id="guitar_top_1"
+				//globale variable, currentID, auslesen, vergeben, si++
+		
+		$("#item_list li").click(function(){
+		//	alert(itemdata[$(this).text()]);
+			var newDiv = $("<div id='" + itemdata[$(this).text()].klasse + "_" + timestamp() +"' class='movable " + itemdata[$(this).text()].klasse + "'><img class='dragimg' src='" + itemdata[$(this).text()].image +"'></div>");
+			newDiv.css("left","50");
+			newDiv.css("top","50");
+			
+			//hier
+			var newDiv2 = $("<div class='close_button'><img src='images/close_button.gif' height='100%' width='100%'></div>");
+			newDiv.append(newDiv2);
+			
+			newDiv2.click(function()
+			{
+				$(this).parent().remove();
+			});
+			
+			layout[newDiv.attr('id')] = {};
+			layout[newDiv.attr('id')]["X"] = 50;
+			layout[newDiv.attr('id')]["Y"] = 50;
+			layout[newDiv.attr('id')]["class"] = itemdata[$(this).text()].klasse;
+			
+			
+			$("body").append(newDiv);
+			
+			newDiv.draggable(
+			{
+				containment: $("#solid"),
+			
+				stop: function(event, ui)
+				{
+				/*	    alert("ID: " + $(this).attr('id') + "\n" + "mouse " + event.pageX + " / " + event.pageY + "\n ui pos: " + ui.position.left + " / " + ui.position.top 
+					  + "\n ui off: " + ui.offset.left + " / " + ui.offset.top); */
+					
+							layout[$(this).attr('id')]["X"] = ui.position.left;
+							layout[$(this).attr('id')]["Y"] = ui.position.top;							
+
+							//for(var i in layout) alert(i + " - " + layout[i].X + " - " + layout[i].Y + " - " + layout[i].class)
+					
+					
+				}
+			});
+		});
+    
+		$(".layout_button").click(function(){
+		
+		for (var stageObject in layout){
+			$(".layout_text").append("<br>" + stageObject + "<br>");
+			$(".layout_text").append(layout[stageObject].X + "<br>");
+			$(".layout_text").append(layout[stageObject].Y + "<br>");
+			$(".layout_text").append(layout[stageObject].class + "<br>");
+			
+			"http://bla.com?guitar_top_615326731_X=50&guitar_top_615326731_Y=290&guitar_top_615326731_class=guitar_top"
+		}
+		
+		$(".layout_text").append(layout);
+		});
+		
+	});
+
+</script>
+
+</head>
+
+<body>
+
+<div id="item_list">
+	<ul>
+		<li><img src="images/guitar_top.gif" height="25" width="100">Gitarren-Topteil</li>
+		<li><img src="images/guitar_box.gif" height="100" width="100">Gitarren-Box</li>
+		<li><img src="images/bass_top.gif" height="25" width="100">Bass-Topteil</li>
+		<li><img src="images/bass_box.gif" height="175" width="100">Bass-Box</li>
+	</ul>
+</div>
+
+
+
+
+
+<!-- Stage -->
+<div id="solid">
+    <img src="images/buehne.jpg" class="dragimg">
+
+</div>
+
+<div id="layout_text" class="layout_text">
+<input type="button" value="layout_button" id="layout_button" class="layout_button">
+
+</input>
+
+</div>
+
+
+</body>
+</html>
