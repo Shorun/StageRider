@@ -160,16 +160,26 @@ top:600px;
     
 		$(".layout_button").click(function(){
 		
-		for (var stageObject in layout){
+		/*for (var stageObject in layout){
 			$(".layout_text").append("<br>" + stageObject + "<br>");
 			$(".layout_text").append(layout[stageObject].X + "<br>");
 			$(".layout_text").append(layout[stageObject].Y + "<br>");
 			$(".layout_text").append(layout[stageObject].class + "<br>");
 			
-			"http://bla.com?guitar_top_615326731_X=50&guitar_top_615326731_Y=290&guitar_top_615326731_class=guitar_top"
+		}*/
+		var output = "?";
+		for (var stageObject in layout) {
+			output += stageObject;
+			output += "=" + layout[stageObject].X;
+			output += "." + layout[stageObject].Y;
+			output += "." + layout[stageObject].class;
+			output += "&";
+			
+		
 		}
 		
-		$(".layout_text").append(layout);
+		$(".layout_text").append(output);
+		
 		});
 		
 	});
